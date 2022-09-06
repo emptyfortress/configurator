@@ -1,30 +1,29 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
+import Drawer from '@/components/Drawer.vue'
+
+const leftDrawer = ref(true)
+const rightDrawer = ref(true)
 </script>
 
-<template>
-	<div>
-		<a href="https://vitejs.dev" target="_blank">
-			<img src="/vite.svg" class="logo" alt="Vite logo" />
-		</a>
-		<a href="https://vuejs.org/" target="_blank">
-			<img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-		</a>
-	</div>
-	<HelloWorld msg="Vite + Vue" />
-	<router-view />
+<template lang="pug">
+q-layout(view="lHh lpR fFf")
+	q-header(bordered class="bg-primary text-white")
+		q-toolbar
+			q-btn(dense flat round icon="menu" @click="leftDrawer = !leftDrawer")
+			q-toolbar-title
+				q-avatar
+					img(src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg")
+			q-btn(dense flat round icon="menu" @click="rightDrawer = !rightDrawer")
+	q-drawer(show-if-above v-model="leftDrawer" side="left" behavior="desktop" bordered)
+	Drawer
+	q-drawer(show-if-above v-model="rightDrawer" side="right" bordered)
+	q-page-container
+		router-view
 </template>
 
-<style scoped>
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-}
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #42b883aa);
+<style scoped lang="scss">
+.q-page-container {
+	// background: red;
 }
 </style>

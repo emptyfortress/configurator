@@ -1,6 +1,6 @@
 <template lang="pug">
 h2 Hello!
-img(src="@/assets/img/test.png")
+q-btn(color="accent") test
 </template>
 
 <script setup lang="ts"></script>
