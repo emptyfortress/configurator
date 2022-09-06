@@ -15,15 +15,10 @@ q-layout(view="lHh lpR fFf")
 				q-avatar
 					img(src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg")
 			q-btn(dense flat round icon="menu" @click="rightDrawer = !rightDrawer")
-	q-drawer(show-if-above v-model="leftDrawer" side="left" behavior="desktop" bordered)
 	Drawer
 	q-drawer(show-if-above v-model="rightDrawer" side="right" bordered)
 	q-page-container
 		router-view
 </template>
 
-<style scoped lang="scss">
-.q-page-container {
-	// background: red;
-}
-</style>
+<style scoped lang="scss"></style>
