@@ -1,0 +1,114 @@
+:root {
+	font-family: Roboto, Avenir, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+
+	--bg-main: hsl(0, 0%, 93%);
+	--bg-drawer: hsl(0, 0%, 96%);
+	--bg-drawer-dark: #271f47;
+	--q-primary: #bbd02d;
+	--q-secondary: #7555f9;
+}
+
+body.body--light {
+	background: var(--bg-light);
+	background-attachment: fixed;
+	--q-selection: var(--q-primary-selection);
+	// --bg-drawer: hsl(0, 0%, 96%);
+	.q-drawer {
+		.fill {
+			--q-selection: var(--q-primary-lighten-1);
+			color: #fff !important;
+		}
+	}
+}
+// Dark theme ****************************************
+
+body.body--dark {
+	--bg-dark: #0d0b09;
+	// --bg-drawer: var(--my-color-step-100);
+	--bg-card: var(--bg-drawer);
+	--bg-hover: #38312b;
+	--main-bg: var(--bg-dark);
+
+	background: var(--bg-dark);
+	color: var(--dark-text-color);
+	--text-color: var(--dark-text-color);
+	--text-color-bright: #000;
+
+	// --my-color-selection: #5c4328;
+	// --my-background-color-rgb: 13, 11, 9;
+	--dark-text-color: #ab9073;
+	--text-color-bright: #cca985;
+	--my-border-color: var(--my-color-step-200);
+	--th-border-color: var(--my-border-color);
+
+	--my-color-step-50: #1e1915;
+	--my-color-step-100: #29221c;
+	--my-color-step-150: #362d25;
+	--my-color-step-200: #4b4034;
+	--my-color-step-250: #4d4135;
+	--my-color-step-300: #4d4d4d;
+	--my-color-step-350: #796653;
+	--my-color-step-400: #85715d;
+	--my-color-step-450: #937d67;
+	--my-color-step-500: #9e8a75;
+	--my-color-step-550: #a79481;
+	--my-color-step-600: #b1a190;
+	--my-color-step-650: #baab9c;
+	--my-color-step-700: #c4b8ab;
+	--my-color-step-750: #cfc4ba;
+	--my-color-step-800: #d9d1c9;
+	--my-color-step-850: #e2dbd5;
+	--my-color-step-900: #ece8e4;
+	--my-color-step-950: #f5f2f0;
+	--my-item-background: #241f19;
+	--my-toolbar-background: #241f19;
+	--my-tab-bar-background: #241f19;
+	--my-card-background: #241f19;
+
+	.q-drawer,
+	.q-header {
+		border-color: var(--my-border-color);
+		color: var(--text-color);
+	}
+	.q-item {
+		color: var(--text-color) !important;
+	}
+	--q-selection: var(--my-color-step-200);
+
+	.q-card {
+		background: var(--my-color-step-100);
+		border: 1px solid var(--my-border-color);
+		color: var(--text-color);
+		box-shadow: 4px 4px 6px 4px black;
+	}
+	.q-drawer {
+		// background: var(--bg-drawer);
+		.fill {
+			--q-selection: var(--q-primary-darken-2);
+			background: var(--q-primary);
+			.q-item--active,
+			.q-item.q-router-link--active {
+				color: #fff !important;
+			}
+		}
+	}
+	.q-toggle[aria-checked='false'] {
+		.q-toggle__thumb:after {
+			background: var(--text-color);
+		}
+	}
+}
+
+// End Dark theme ****************************************

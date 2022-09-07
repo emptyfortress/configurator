@@ -20,5 +20,15 @@ export const router = createRouter({
 			component: Home,
 			meta: { transition: 'slide-left', title: 'DV prototypes', requiresAuth: false },
 		},
+		{
+			path: '/start',
+			component: () => import('@/components/Start.vue'),
+			meta: { transition: 'slide-left', title: 'DV prototypes', requiresAuth: false },
+		},
+		{
+			path: '/refresh',
+			component: () => import('@/components/Refresh.vue'),
+			meta: { transition: 'slide-left', title: 'DV prototypes', requiresAuth: false },
+		},
 	],
 })

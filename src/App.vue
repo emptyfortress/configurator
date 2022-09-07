@@ -1,24 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useQuasar } from 'quasar'
 import Drawer from '@/components/Drawer.vue'
+import RDrawer from '@/components/RDrawer.vue'
 
-const leftDrawer = ref(true)
+const $q = useQuasar()
+const dark = ref(false)
 const rightDrawer = ref(true)
+const en = ref(false)
+
+watch(
+	() => dark.value,
+	() => {
+		$q.dark.toggle()
+	}
+)
 </script>
 
 <template lang="pug">
-q-layout(view="lHh lpR fFf")
-	q-header(bordered class="bg-primary text-white")
+q-layout(view="LHh lpR fFf")
+	q-header(bordered).header
 		q-toolbar
-			q-btn(dense flat round icon="menu" @click="leftDrawer = !leftDrawer")
 			q-toolbar-title
-				q-avatar
-					img(src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg")
+			q-btn(flat round @click="en = !en")
+				img(v-if="en" src="@/assets/img/icons/us.svg" width="24")
+				img(v-else src="@/assets/img/icons/russia.svg" width="24")
+			q-btn(flat round icon="mdi-brightness-4" color="black" @click="dark = !dark")
 			q-btn(dense flat round icon="menu" @click="rightDrawer = !rightDrawer")
 	Drawer
-	q-drawer(show-if-above v-model="rightDrawer" side="right" bordered)
+	RDrawer(:show="rightDrawer")
 	q-page-container
-		router-view
+		router-view(v-slot="{ Component, route }")
+			transition(name="slide-right" mode="out-in")
+				component(:is="Component")
 </template>
 
 <style scoped lang="scss"></style>

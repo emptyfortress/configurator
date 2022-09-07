@@ -1,22 +1,40 @@
 <template lang="pug">
-q-drawer(v-model="show" side="left" :mini="mini" :width="width" bordered)
+q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bordered).left
+	.logo
+		img(src="@/assets/img/logo.svg" width="40" )
+		span(v-if="!mystore.mini") Конфигуратор ДВ
+	br
+	br
+	q-list
+		q-item(clickable to="/")
+			q-item-section(avatar)
+				q-icon(name="mdi-flag-checkered")
+			q-item-section Начало
+		q-item(clickable to="/start")
+			q-item-section(avatar)
+				q-icon(name="mdi-tools")
+			q-item-section Первичная настройка
+		q-item(clickable to="/refresh")
+			q-item-section(avatar)
+				q-icon(name="mdi-reload")
+			q-item-section Обновление настроек
 
-	q-btn(round flat dense :icon="minitoogle" @click="mini = !mini").mini.gt-sm
+
+	q-btn(round flat dense :icon="minitoogle" @click="mystore.toggleMini").mini.gt-sm
+	img(src="@/assets/img/dv.svg" v-if="!mystore.mini").dv
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-// import { useColor } from '@/stores/colors'
-// import { useRoute } from '@/router/router'
+import { ref, computed, watch } from 'vue'
+import { useStore } from '@/stores/store'
 
-// import SvgIcon from '@/components/SvgIcon.vue'
+const mystore = useStore()
 
 const width = 256
-const mini = ref(false)
 const show = ref(true)
 
 const minitoogle = computed(() => {
-	return mini.value ? 'mdi-forwardburger' : 'mdi-backburger'
+	return mystore.mini ? 'mdi-forwardburger' : 'mdi-backburger'
 })
 </script>
 
@@ -27,11 +45,18 @@ const minitoogle = computed(() => {
 	left: 0.5rem;
 	overflow-x: hidden;
 }
-.fill {
-	color: #fff !important;
-	.q-item--active,
-	.q-item.q-router-link--active {
-		color: #fff;
+.dv {
+	position: absolute;
+	bottom: 1.1rem;
+	right: 1rem;
+}
+.logo {
+	font-size: 1.1rem;
+	padding: 0.5rem;
+	overflow: hidden;
+	img {
+		vertical-align: middle;
+		margin-right: 1rem;
 	}
 }
 </style>
