@@ -1,7 +1,7 @@
 <template lang="pug">
 q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bordered).left
 	.logo
-		img(src="@/assets/img/logo.svg" width="40" )
+		img(src="@/assets/img/logo.svg" width="40" @click="mystore.toggleRightDr").cursor-pointer
 		span(v-if="!mystore.mini") Конфигуратор ДВ
 	br
 	br
