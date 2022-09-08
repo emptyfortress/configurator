@@ -1,5 +1,6 @@
 <template lang="pug">
-h2 Refresh
+q-page(padding)
+	h2 Refresh
 </template>
 
 <script setup lang="ts"></script>

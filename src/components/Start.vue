@@ -1,24 +1,33 @@
 <template lang="pug">
 q-page(padding)
-	.hd Первичная настройка служб docsvision
 	p Укажите порты для служб dv или оставьте значения по умолчанию.
 	.grid
-		.service(v-for="service in services" :key="service.id")
+		.service(v-for="(item, index) in services" :key="item.id")
 			.zag
-				|{{ service.label}}
-				q-btn(dense round flat icon="mdi-autorenew" color="grey")
+				|{{ item.label}}
+				q-btn(dense round flat icon="mdi-autorenew" color="grey" @click="reset(item, index)")
 					q-tooltip Вернуть умолчания
 			.form
 				.label Порт:
-				q-input(v-model="service.port" dense color="accent").port
-				q-checkbox(v-model="users" :val="service.user" dense color="accent" label="Указать пользователя" ).check
+				q-input(v-model="item.port" type="number" dense color="accent").port
+				q-checkbox(v-model="login" :val="item.user" dense color="accent" label="Указать пользователя" ).check
 
-				template(v-if="checkUser(service.user)")
+				template(v-if="checkUser(item.user)")
 					.label Логин:
-					q-input(v-model="service.login" dense color="accent").port
+					q-input(v-model="item.login" dense color="accent").port
 					.label Пароль:
-					q-input(v-model="service.password" type="password" dense color="accent").port
-			q-btn(flat color="accent" label="Проверка соединения" size="sm").q-mt-lg
+					q-input(v-model="item.password" :type="calcType(item)" dense color="accent").port
+						template(v-slot:append)
+							q-btn(dense flat round @click="item.pass = !item.pass")
+								q-icon(v-if="item.pass === true" name="mdi-eye-off")
+								q-icon(v-else name="mdi-eye")
+			.row.justify-between.items-end
+				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading[item.id]" @click="simulateProgress(item.id)").q-mt-lg
+				q-icon(v-if="item.connection && item.id !== 2" name="mdi-check-network" size="32px" color="positive")
+				q-icon(v-if="item.connection && item.id === 2" name="mdi-alert" size="32px" color="negative").cursor-pointer
+					q-menu(padding)
+						q-card-section Сервер не отвечает :(
+
 
 	q-card.service.item
 		q-expansion-item(
@@ -26,35 +35,76 @@ q-page(padding)
 			icon="mdi-tools"
 			label="Дополнительные настройки"
 			)
-
 			q-card
 				q-card-section
 					.log
 						div Хранилище логов:
 						q-input(v-model="logs" dense color="accent")
 						q-btn(flat color="accent" label="Выбрать" size="md")
+	q-card-actions.q-mt-xl
+		q-space
+		q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll")
+		q-btn(color="accent" unelevated label="Применить")
+		q-space
 
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { items, defaultItems } from '@/stores/data'
+import { Notify, useQuasar } from 'quasar'
 
-const users = ref([])
+const $q = useQuasar()
+
+let services = reactive([...items])
+
+const login = ref([])
+const loading = ref([false, false, false])
 const logs = ref('C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs')
 
 const checkUser = (user: string) => {
-	return users.value.some((item) => item === user)
+	return login.value.some((item) => item === user)
 }
 
-const services = reactive([
-	{ id: 0, label: 'Сервис настроек', port: 5100, user: 'setup', login: '', password: '' },
-	{ id: 1, label: 'Консоль управления', port: 5200, user: 'console', login: '', password: '' },
-	{ id: 2, label: 'API консоли управления', port: 5300, user: 'api', login: '', password: '' },
-])
+const simulateProgress = (e: number) => {
+	loading.value[e] = true
+	setTimeout(() => {
+		loading.value[e] = false
+		services[e].connection = true
+		if (e < 2) {
+			$q.notify({
+				icon: 'mdi-check-bold',
+				message: 'Сервер в порядке',
+				color: 'positive',
+			})
+		} else {
+			$q.notify({
+				message: 'Сервер не отвечает',
+				color: 'negative',
+			})
+		}
+	}, 2000)
+}
+const calcType = (e: any) => {
+	if (e.pass === true) {
+		return 'password'
+	} else return 'text'
+}
+
+const reset = (e: any, i: number) => {
+	Object.assign(e, defaultItems[i])
+}
+
+const resetAll = () => {
+	login.value = []
+	services.forEach((_, index) => {
+		Object.assign(services[index], defaultItems[index])
+	})
+	logs.value = 'C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs'
+}
 </script>
 
 <style scoped lang="scss">
-//@import '@/assets/css/colors.scss';
 .service {
 	padding: 1rem;
 	background: var(--bg-main);
@@ -96,7 +146,7 @@ const services = reactive([
 .item {
 	width: 800px;
 	margin: 0 auto;
-	margin-top: 5rem;
+	margin-top: 2rem;
 	.q-card {
 		background: transparent;
 	}
@@ -109,5 +159,8 @@ const services = reactive([
 	.q-input {
 		width: 60%;
 	}
+}
+p {
+	font-size: 1rem;
 }
 </style>

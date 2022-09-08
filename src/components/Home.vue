@@ -1,7 +1,7 @@
 <template lang="pug">
 .cent
 	q-img(src="@/assets/img/bg.png" width="300px" height="300px").q-mt-xl
-	h5 Выберите тип настройки:
+	h6 Выберите тип настройки:
 	q-btn(color="accent" to="/start").q-mr-md
 		q-icon(name="mdi-tools").q-mr-sm
 		|Первичная настройка

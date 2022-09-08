@@ -18,17 +18,25 @@ export const router = createRouter({
 		{
 			path: '/',
 			component: Home,
-			meta: { transition: 'slide-left', title: 'DV prototypes', requiresAuth: false },
+			meta: {
+				transition: 'slide-left',
+				title: 'Здесь вы можете настроить docsvision',
+				requiresAuth: false,
+			},
 		},
 		{
 			path: '/start',
 			component: () => import('@/components/Start.vue'),
-			meta: { transition: 'slide-left', title: 'DV prototypes', requiresAuth: false },
+			meta: {
+				transition: 'slide-left',
+				title: 'Первичная настройка служб docsvision',
+				requiresAuth: false,
+			},
 		},
 		{
 			path: '/refresh',
 			component: () => import('@/components/Refresh.vue'),
-			meta: { transition: 'slide-left', title: 'DV prototypes', requiresAuth: false },
+			meta: { transition: 'slide-left', title: 'Обновление настроек', requiresAuth: false },
 		},
 	],
 })
