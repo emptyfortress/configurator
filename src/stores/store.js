@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
-import { items } from '@/stores/data'
 
 export const useStore = defineStore({
 	id: 'store',
 	state: () => ({
 		leftDrawer: true,
-		rightDrawer: false,
-		mini: true,
-		services: [...items],
+		rightDrawer: true,
+		mini: false,
 	}),
 	getters: {},
 	actions: {
@@ -19,10 +17,6 @@ export const useStore = defineStore({
 		},
 		toggleMini() {
 			this.mini = !this.mini
-		},
-		loadServices() {
-			console.log('fuck')
-			this.services = [...items]
 		},
 	},
 })

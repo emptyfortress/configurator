@@ -5,8 +5,11 @@ q-page(padding)
 		.service(v-for="(item, index) in services" :key="item.id")
 			.zag
 				|{{ item.label}}
-				q-btn(dense round flat icon="mdi-autorenew" color="grey" @click="reset(item, index)")
-					q-tooltip Вернуть умолчания
+				transition(name="slide-right" )
+					q-btn(dense round flat icon="mdi-autorenew"
+						@click="reset(item, index)"
+						v-if="showRefresh(index)")
+						q-tooltip Вернуть умолчания
 			.form
 				.label Порт:
 				q-input(v-model="item.port" type="number" dense color="accent").port
@@ -23,8 +26,8 @@ q-page(padding)
 								q-icon(v-else name="mdi-eye")
 			.row.justify-between.items-end
 				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading[item.id]" @click="simulateProgress(item.id)").q-mt-lg
-				q-icon(v-if="item.connection && item.id !== 2" name="mdi-check-network" size="32px" color="positive")
-				q-icon(v-if="item.connection && item.id === 2" name="mdi-alert" size="32px" color="negative").cursor-pointer
+				q-icon(v-if="connection[index] && item.id !== 2" name="mdi-check-network" size="32px" color="positive")
+				q-icon(v-if="connection[index] && item.id === 2" name="mdi-alert" size="32px" color="negative").cursor-pointer
 					q-menu(padding)
 						q-card-section Сервер не отвечает :(
 
@@ -41,25 +44,28 @@ q-page(padding)
 						div Хранилище логов:
 						q-input(v-model="logs" dense color="accent")
 						q-btn(flat color="accent" label="Выбрать" size="md")
-	q-card-actions.q-mt-xl
+	q-card-actions.item
+		q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll" :disable="!showApply")
+		q-btn(color="accent" flat label="Сохранить как настройки по умолчанию" :disable="!showApply")
 		q-space
-		q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll")
 		q-btn(color="accent" unelevated label="Применить")
-		q-space
 
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, computed, reactive } from 'vue'
+import type { Ref } from 'vue'
+
 import { items, defaultItems } from '@/stores/data'
-import { Notify, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
 
 let services = reactive([...items])
 
-const login = ref([])
+const login: Ref<String[]> = ref([])
 const loading = ref([false, false, false])
+const connection = ref([false, false, false])
 const logs = ref('C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs')
 
 const checkUser = (user: string) => {
@@ -68,9 +74,10 @@ const checkUser = (user: string) => {
 
 const simulateProgress = (e: number) => {
 	loading.value[e] = true
+	const output = document.querySelector('#output')
 	setTimeout(() => {
 		loading.value[e] = false
-		services[e].connection = true
+		connection.value[e] = true
 		if (e < 2) {
 			$q.notify({
 				icon: 'mdi-check-bold',
@@ -82,6 +89,8 @@ const simulateProgress = (e: number) => {
 				message: 'Сервер не отвечает',
 				color: 'negative',
 			})
+			output!.innerHTML =
+				new Date() + '<br />' + JSON.stringify(services[2]).split(',').join(', <br />')
 		}
 	}, 2000)
 }
@@ -102,6 +111,17 @@ const resetAll = () => {
 	})
 	logs.value = 'C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs'
 }
+const showRefresh = (e: number) => {
+	if (JSON.stringify(services[e]) === JSON.stringify(defaultItems[e])) {
+		return false
+	} else return true
+}
+const showApply = computed(() => {
+	let temp: Boolean[] = []
+	services.forEach((_, index) => temp.push(showRefresh(index)))
+	return temp.some((item) => item === true)
+})
+console.log(showApply.value)
 </script>
 
 <style scoped lang="scss">
@@ -122,6 +142,7 @@ const resetAll = () => {
 .zag {
 	font-size: 1.1rem;
 	margin-bottom: 1rem;
+	height: 32px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

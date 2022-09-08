@@ -6,7 +6,6 @@ const items = [
 		user: 'setup',
 		login: '',
 		password: '',
-		connection: false,
 		pass: true,
 	},
 	{
@@ -16,7 +15,6 @@ const items = [
 		user: 'console',
 		login: '',
 		password: '',
-		connection: false,
 		pass: true,
 	},
 	{
@@ -26,7 +24,6 @@ const items = [
 		user: 'api',
 		login: '',
 		password: '',
-		connection: false,
 		pass: true,
 	},
 ]
@@ -38,7 +35,6 @@ const defaultItems = items.map((item) => ({
 	user: item.user,
 	login: item.login,
 	password: item.password,
-	connection: item.connection,
 	pass: item.pass,
 }))
 
