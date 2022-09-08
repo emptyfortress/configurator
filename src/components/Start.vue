@@ -19,10 +19,10 @@ q-page(padding)
 					.label Логин:
 					q-input(v-model="item.login" dense color="accent").port
 					.label Пароль:
-					q-input(v-model="item.password" :type="calcType(item)" dense color="accent").port
+					q-input(v-model="item.password" :type="calcType(index)" dense color="accent").port
 						template(v-slot:append)
-							q-btn(dense flat round @click="item.pass = !item.pass")
-								q-icon(v-if="item.pass === true" name="mdi-eye-off")
+							q-btn(dense flat round @click="pass[index] = !pass[index]")
+								q-icon(v-if="pass[index] === false" name="mdi-eye-off")
 								q-icon(v-else name="mdi-eye")
 			.row.justify-between.items-end
 				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading[item.id]" @click="simulateProgress(item.id)").q-mt-lg
@@ -45,8 +45,13 @@ q-page(padding)
 						q-input(v-model="logs" dense color="accent")
 						q-btn(flat color="accent" label="Выбрать" size="md")
 	q-card-actions.item
-		q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll" :disable="!showApply")
-		q-btn(color="accent" flat label="Сохранить как настройки по умолчанию" :disable="!showApply")
+		transition(name="slide-bottom")
+			template(v-if="showApply")
+				span
+					q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll" :disable="!showApply")
+						q-tooltip Вернуть значения по умолчанию
+					q-btn(color="accent" flat label="Сохранить" :disable="!showApply")
+						q-tooltip Сохранить как настройки по умолчанию
 		q-space
 		q-btn(color="accent" unelevated label="Применить")
 
@@ -64,6 +69,7 @@ const $q = useQuasar()
 let services = reactive([...items])
 
 const login: Ref<String[]> = ref([])
+const pass: Ref<Boolean[]> = ref([false, false, false])
 const loading = ref([false, false, false])
 const connection = ref([false, false, false])
 const logs = ref('C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs')
@@ -94,8 +100,8 @@ const simulateProgress = (e: number) => {
 		}
 	}, 2000)
 }
-const calcType = (e: any) => {
-	if (e.pass === true) {
+const calcType = (e: number) => {
+	if (pass.value[e] === false) {
 		return 'password'
 	} else return 'text'
 }

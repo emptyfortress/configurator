@@ -6,7 +6,6 @@ const items = [
 		user: 'setup',
 		login: '',
 		password: '',
-		pass: true,
 	},
 	{
 		id: 1,
@@ -15,7 +14,6 @@ const items = [
 		user: 'console',
 		login: '',
 		password: '',
-		pass: true,
 	},
 	{
 		id: 2,
@@ -24,7 +22,6 @@ const items = [
 		user: 'api',
 		login: '',
 		password: '',
-		pass: true,
 	},
 ]
 
@@ -35,7 +32,6 @@ const defaultItems = items.map((item) => ({
 	user: item.user,
 	login: item.login,
 	password: item.password,
-	pass: item.pass,
 }))
 
 export { items, defaultItems }
