@@ -3,12 +3,8 @@
 	q-img(src="@/assets/img/bg.png" width="300px" height="300px").q-mt-xl
 	h6 Выберите тип настройки:
 	q-card-actions
-		q-btn(color="accent" to="/start")
-		q-icon(name="mdi-tools").q-mr-sm
-		|Первичная настройка
-	q-btn(color="accent" to="/refresh")
-		q-icon(name="mdi-reload").q-mr-sm
-		|Обновление настроек
+		q-btn(color="accent" to="/start" icon="mdi-tools" label="Первичная настройка")
+		q-btn(color="accent" to="/refresh" icon="mdi-reload" label="Обновление настроек")
 
 </template>
 
