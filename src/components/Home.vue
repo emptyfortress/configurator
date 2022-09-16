@@ -1,16 +1,46 @@
 <template lang="pug">
 .cent
 	q-img(src="@/assets/img/bg.png" width="300px" height="300px").q-mt-xl
-	h6 Выберите тип настройки:
+	.row.items-center.q-mt-lg
+		q-checkbox(v-model="mystore.agree" color="accent")
+		q-label Я согласен с <a href="#" @click.prevent="showLic">лицензионным соглашением</a> docsvision.
+	h6.q-ml-sm Выберите тип настройки:
 	q-card-actions
-		q-btn(color="accent" to="/start" icon="mdi-tools" label="Первичная настройка")
-		q-btn(color="accent" to="/refresh" icon="mdi-reload" label="Обновление настроек")
+		q-btn(color="accent" to="/start" icon="mdi-tools" label="Первичная настройка" :disable="!mystore.agree")
+		q-btn(color="accent" to="/refresh" icon="mdi-reload" label="Обновление настроек" :disable="!mystore.agree")
 
+	q-dialog(v-model="lic")
+		q-card.lic
+			q-card-section.row.justify-between.items-center
+				.text-h6
+					img(src="@/assets/img/license.svg").license
+					|Лицензионное соглашение с конечным пользователем
+				q-btn(flat round icon="mdi-close" v-close-popup)
+			q-separator
+			License
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import License from '@/components/License.vue'
+import { useStore } from '@/stores/store'
+
+const mystore = useStore()
+
+// const agree = ref(mystore.agree)
+const lic = ref(false)
+
+const showLic = () => {
+	lic.value = !lic.value
+}
+</script>
 
 <style scoped lang="scss">
+.license {
+	width: 42px;
+	vertical-align: middle;
+	margin-right: 1rem;
+}
 .cent {
 	width: 500px;
 	margin: 0 auto;
@@ -23,5 +53,8 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 1rem;
+}
+.lic {
+	min-width: 900px;
 }
 </style>

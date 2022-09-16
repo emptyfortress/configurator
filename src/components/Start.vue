@@ -1,8 +1,8 @@
 <template lang="pug">
 q-page(padding)
-	p Укажите порты для служб dv или оставьте значения по умолчанию.
+	p Заполните формы или оставьте значения по умолчанию.
 	.grid
-		.service(v-for="(item, index) in services" :key="item.id")
+		.service(v-for="(item, index) in mystore.items" :key="item.id")
 			.zag
 				|{{ item.label}}
 				transition(name="slide-right" )
@@ -11,19 +11,32 @@ q-page(padding)
 						v-if="showRefresh(index)")
 						q-tooltip Вернуть умолчания
 			.form
-				.label Порт:
-				q-input(v-model="item.port" type="number" dense color="accent").port
-				q-checkbox(v-model="login" :val="item.user" dense color="accent" label="Указать пользователя" ).check
+				q-input(v-model="item.servername" label="Имя сервера" color="accent" clearable).ful
+				.label Тип сервера:
+				q-select(v-model="item.servertype" :options="servertypes" dense color="accent").port
 
-				template(v-if="checkUser(item.user)")
-					.label Логин:
-					q-input(v-model="item.login" dense color="accent").port
-					.label Пароль:
-					q-input(v-model="item.password" :type="calcType(index)" dense color="accent").port
-						template(v-slot:append)
-							q-btn(dense flat round @click="pass[index] = !pass[index]")
-								q-icon(v-if="pass[index] === false" name="mdi-eye-off")
-								q-icon(v-else name="mdi-eye")
+				template(v-if="item.servertype === 'Microsoft SQL Server'")
+					.label Аутентификация:
+					q-select(v-model="item.authentification" :options="authentifications" dense color="accent").port
+				template(v-if="item.servertype === 'PostgreSQL'")
+					.label Порт:
+					q-input(v-model="item.port" type="number" dense color="accent").port
+
+				.label Логин:
+				q-input(v-model="item.login" dense color="accent").port
+				.label Пароль:
+				q-input(v-model="item.password" :type="calcType(index)" dense color="accent").port
+					template(v-slot:append)
+						q-btn(dense flat round @click="pass[index] = !pass[index]")
+							q-icon(v-if="pass[index] === false" name="mdi-eye-off")
+							q-icon(v-else name="mdi-eye")
+				q-input(v-model="item.databaseName" label="Название базы данных" color="accent" clearable).ful
+			br
+			q-expansion-item(dense
+				label="Дополнительные настройки")
+				q-card-section
+					q-input(v-model="item.log" type="text" label="Хранилище логов" color="accent" clearable)
+
 			.row.justify-between.items-end
 				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading[item.id]" @click="simulateProgress(item.id)").q-mt-lg
 				q-icon(v-if="connection[index] && item.id !== 2" name="mdi-check-network" size="32px" color="positive")
@@ -31,52 +44,28 @@ q-page(padding)
 					q-menu(padding)
 						q-card-section Сервер не отвечает :(
 
-
-	q-card.service.item
-		q-expansion-item(
-			expand-separator
-			icon="mdi-tools"
-			label="Дополнительные настройки"
-			)
-			q-card
-				q-card-section
-					.log
-						div Хранилище логов:
-						q-input(v-model="logs" dense color="accent")
-						q-btn(flat color="accent" label="Выбрать" size="md")
-	q-card-actions.item
-		transition(name="slide-bottom")
-			template(v-if="showApply")
-				span
-					q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll" :disable="!showApply")
-						q-tooltip Вернуть значения по умолчанию
-					q-btn(color="accent" flat label="Сохранить" :disable="!showApply")
-						q-tooltip Сохранить как настройки по умолчанию
-		q-space
+	q-card-actions(align="center").service.item
+		transition(name="slide-botton")
+			q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll" :disable="!showApply")
+				q-tooltip Вернуть значения по умолчанию
 		q-btn(color="accent" unelevated label="Применить")
 
 </template>
 
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue'
-import type { Ref } from 'vue'
-
-import { items, defaultItems } from '@/stores/data'
+import { useStore } from '@/stores/store'
 import { useQuasar } from 'quasar'
+import type { Ref } from 'vue'
+import { servertypes } from '@/stores/data'
 
+const mystore = useStore()
 const $q = useQuasar()
 
-let services = reactive([...items])
-
-const login: Ref<String[]> = ref([])
 const pass: Ref<Boolean[]> = ref([false, false, false])
 const loading = ref([false, false, false])
 const connection = ref([false, false, false])
-const logs = ref('C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs')
-
-const checkUser = (user: string) => {
-	return login.value.some((item) => item === user)
-}
+const authentifications = ref(['SQL Server', 'Windows'])
 
 const simulateProgress = (e: number) => {
 	loading.value[e] = true
@@ -95,8 +84,8 @@ const simulateProgress = (e: number) => {
 				message: 'Сервер не отвечает',
 				color: 'negative',
 			})
-			output!.innerHTML =
-				new Date() + '<br />' + JSON.stringify(services[2]).split(',').join(', <br />')
+			mystore.rightDrawer = true
+			output!.innerHTML = new Date() + '<br />' + 'Some error messages'
 		}
 	}, 2000)
 }
@@ -107,27 +96,27 @@ const calcType = (e: number) => {
 }
 
 const reset = (e: any, i: number) => {
-	Object.assign(e, defaultItems[i])
+	Object.assign(e, mystore.defaultItems[i])
 }
 
 const resetAll = () => {
-	login.value = []
-	services.forEach((_, index) => {
-		Object.assign(services[index], defaultItems[index])
+	mystore.items.forEach((_, index) => {
+		Object.assign(mystore.items[index], mystore.defaultItems[index])
 	})
-	logs.value = 'C:\\ProgramData\\Docsvision\\ManagementConsole\\Logs'
+	mystore.toggleRightDr()
+	connection.value = [false, false, false]
 }
+
 const showRefresh = (e: number) => {
-	if (JSON.stringify(services[e]) === JSON.stringify(defaultItems[e])) {
+	if (JSON.stringify(mystore.items[e]) === JSON.stringify(mystore.defaultItems[e])) {
 		return false
 	} else return true
 }
 const showApply = computed(() => {
 	let temp: Boolean[] = []
-	services.forEach((_, index) => temp.push(showRefresh(index)))
+	mystore.items.forEach((_, index) => temp.push(showRefresh(index)))
 	return temp.some((item) => item === true)
 })
-console.log(showApply.value)
 </script>
 
 <style scoped lang="scss">
@@ -155,7 +144,7 @@ console.log(showApply.value)
 }
 .label {
 	font-size: 0.9rem;
-	width: 60px;
+	width: 100px;
 }
 .form {
 	display: grid;
@@ -164,6 +153,10 @@ console.log(showApply.value)
 	> div {
 		align-self: center;
 		white-space: no-wrap;
+	}
+	.ful {
+		grid-column: 1/-1;
+		font-size: 1.1rem;
 	}
 }
 .check {

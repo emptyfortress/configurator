@@ -19,8 +19,7 @@ export const router = createRouter({
 			path: '/',
 			component: Home,
 			meta: {
-				transition: 'slide-left',
-				title: 'Здесь вы можете настроить docsvision',
+				title: 'Примите лицензионное соглашение',
 				requiresAuth: false,
 			},
 		},
@@ -28,7 +27,6 @@ export const router = createRouter({
 			path: '/start',
 			component: () => import('@/components/Start.vue'),
 			meta: {
-				transition: 'slide-left',
 				title: 'Первичная настройка служб docsvision',
 				requiresAuth: false,
 			},
@@ -36,7 +34,10 @@ export const router = createRouter({
 		{
 			path: '/refresh',
 			component: () => import('@/components/Refresh.vue'),
-			meta: { transition: 'slide-left', title: 'Обновление настроек', requiresAuth: false },
+			meta: {
+				title: 'Обновление настроек',
+				requiresAuth: false,
+			},
 		},
 	],
 })

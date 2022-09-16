@@ -11,7 +11,7 @@ export default defineConfig({
 				transformAssetUrls,
 				compilerOptions: {
 					// treat all tags with a dash as custom elements
-					// isCustomElement: (tag) => tag.includes('apex'),
+					isCustomElement: (tag) => tag.includes('q-label'),
 				},
 			},
 		}),

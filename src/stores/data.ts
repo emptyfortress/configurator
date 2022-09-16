@@ -2,26 +2,38 @@ const items = [
 	{
 		id: 0,
 		label: 'Сервис настроек',
+		servertype: '',
+		servername: '',
+		authentification: '',
 		port: 5100,
-		user: 'setup',
 		login: '',
 		password: '',
+		databaseName: '',
+		log: undefined,
 	},
 	{
 		id: 1,
 		label: 'Консоль управления',
+		servertype: '',
+		servername: '',
+		authentification: '',
 		port: 5200,
-		user: 'console',
 		login: '',
 		password: '',
+		databaseName: '',
+		log: undefined,
 	},
 	{
 		id: 2,
 		label: 'API консоли управления',
+		servertype: '',
+		servername: '',
+		authentification: '',
 		port: 5300,
-		user: 'api',
 		login: '',
 		password: '',
+		databaseName: '',
+		log: undefined,
 	},
 ]
 
@@ -29,9 +41,10 @@ const defaultItems = items.map((item) => ({
 	id: item.id,
 	label: item.label,
 	port: item.port,
-	user: item.user,
 	login: item.login,
 	password: item.password,
 }))
 
-export { items, defaultItems }
+const servertypes = ['Microsoft SQL Server', 'PostgreSQL']
+
+export { items, defaultItems, servertypes }

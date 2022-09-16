@@ -8,20 +8,21 @@ q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bor
 	q-list
 		q-item(clickable to="/")
 			q-item-section(avatar)
-				q-icon(name="mdi-flag-checkered")
-			q-item-section Начало
-		q-item(clickable to="/start")
+				q-icon(name="mdi-license")
+			q-item-section Лицензия
+		q-item(clickable to="/start" :disable="!mystore.agree")
 			q-item-section(avatar)
 				q-icon(name="mdi-tools")
 			q-item-section Первичная настройка
-		q-item(clickable to="/refresh")
+		q-item(clickable to="/refresh" :disable="!mystore.agree")
 			q-item-section(avatar)
 				q-icon(name="mdi-reload")
 			q-item-section Обновление настроек
 
 
 	q-btn(round flat dense :icon="minitoogle" @click="mystore.toggleMini").mini.gt-sm
-	img(src="@/assets/img/dv.svg" v-if="!mystore.mini").dv
+	a(href="https://docsvision.com/" v-if="!mystore.mini").dv
+		img(src="@/assets/img/dv.svg")
 </template>
 
 <script setup lang="ts">
@@ -47,8 +48,9 @@ const minitoogle = computed(() => {
 }
 .dv {
 	position: absolute;
-	bottom: 1.1rem;
+	bottom: 0.9rem;
 	right: 1rem;
+	cursor: pointer;
 }
 .logo {
 	font-size: 1.1rem;

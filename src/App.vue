@@ -4,20 +4,10 @@ import Drawer from '@/components/Drawer.vue'
 import RDrawer from '@/components/RDrawer.vue'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/stores/store'
-// import { useQuasar } from 'quasar'
 
-// const $q = useQuasar()
-// const dark = ref(false)
 const mystore = useStore()
 const route = useRoute()
 const en = ref(false)
-
-// watch(
-// 	() => dark.value,
-// 	() => {
-// 		$q.dark.toggle()
-// 	}
-// )
 </script>
 
 <template lang="pug">
