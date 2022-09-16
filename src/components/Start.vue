@@ -30,7 +30,7 @@ q-page(padding)
 						q-btn(dense flat round @click="pass[index] = !pass[index]")
 							q-icon(v-if="pass[index] === false" name="mdi-eye-off")
 							q-icon(v-else name="mdi-eye")
-				q-input(v-model="item.databaseName" label="Название базы данных" color="accent" clearable).ful
+				q-input(v-if="index === 0" v-model="item.databaseName" label="Название базы данных" color="accent" clearable).ful
 			br
 			q-expansion-item(dense
 				label="Дополнительные настройки")
