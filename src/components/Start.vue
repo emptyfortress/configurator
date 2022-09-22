@@ -1,5 +1,5 @@
 <template lang="pug">
-q-page(padding)
+q-page(padding :class="calcClass")
 	p Заполните формы или оставьте значения по умолчанию.
 	.grid
 		.service(v-for="(item, index) in mystore.items" :key="item.id")
@@ -11,38 +11,13 @@ q-page(padding)
 						v-if="showRefresh(index)")
 						q-tooltip Вернуть умолчания
 			.form
-				q-input(v-model="item.servername" label="Имя сервера" color="accent" clearable).ful
-				.label Тип сервера:
-				q-select(v-model="item.servertype" :options="servertypes" dense color="accent").port
-
-				template(v-if="item.servertype === 'Microsoft SQL Server'")
-					.label Аутентификация:
-					q-select(v-model="item.authentification" :options="authentifications" dense color="accent").port
-				template(v-if="item.servertype === 'PostgreSQL'")
-					.label Порт:
-					q-input(v-model="item.port" type="number" dense color="accent").port
-
-				.label Логин:
-				q-input(v-model="item.login" dense color="accent").port
-				.label Пароль:
-				q-input(v-model="item.password" :type="calcType(index)" dense color="accent").port
-					template(v-slot:append)
-						q-btn(dense flat round @click="pass[index] = !pass[index]")
-							q-icon(v-if="pass[index] === false" name="mdi-eye-off")
-							q-icon(v-else name="mdi-eye")
-				q-input(v-if="index === 0" v-model="item.databaseName" label="Название базы данных" color="accent" clearable).ful
+				.label Порт:
+				q-input(v-model="item.port" type="number" dense color="accent").port
 			br
 			q-expansion-item(dense
 				label="Дополнительные настройки")
 				q-card-section
 					q-input(v-model="item.log" type="text" label="Хранилище логов" color="accent" clearable)
-
-			.row.justify-between.items-end
-				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading[item.id]" @click="simulateProgress(item.id)").q-mt-lg
-				q-icon(v-if="connection[index] && item.id !== 2" name="mdi-check-network" size="32px" color="positive")
-				q-icon(v-if="connection[index] && item.id === 2" name="mdi-alert" size="32px" color="negative").cursor-pointer
-					q-menu(padding)
-						q-card-section Сервер не отвечает :(
 
 	q-card-actions(align="center").service.item
 		transition(name="slide-botton")
@@ -62,10 +37,18 @@ import { servertypes } from '@/stores/data'
 const mystore = useStore()
 const $q = useQuasar()
 
+const user = ref([false, false, false])
 const pass: Ref<Boolean[]> = ref([false, false, false])
 const loading = ref([false, false, false])
 const connection = ref([false, false, false])
 const authentifications = ref(['SQL Server', 'Windows'])
+
+const calcClass = computed(() => {
+	if (mystore.os === 'linux') {
+		return 'lin'
+	}
+	return 'win'
+})
 
 const simulateProgress = (e: number) => {
 	loading.value[e] = true
@@ -157,6 +140,9 @@ const showApply = computed(() => {
 	.ful {
 		grid-column: 1/-1;
 		font-size: 1.1rem;
+		&.small {
+			font-size: 0.9rem;
+		}
 	}
 }
 .check {
@@ -182,5 +168,8 @@ const showApply = computed(() => {
 }
 p {
 	font-size: 1rem;
+}
+.win {
+	background: img('@/assets/img/linux.svg');
 }
 </style>

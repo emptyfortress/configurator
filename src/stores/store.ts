@@ -7,6 +7,7 @@ export const useStore = defineStore({
 		rightDrawer: false,
 		mini: false,
 		agree: false,
+		os: 'windows',
 		items: [
 			{
 				id: 0,

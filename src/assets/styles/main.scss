@@ -38,7 +38,6 @@ button {
 }
 .port {
 	font-size: 1.1rem;
-	// width: 94%;
 	margin-left: 1rem;
 }
 h6 {
@@ -50,4 +49,19 @@ h6 {
 .right {
 	padding: 1rem;
 	font-family: monospace;
+}
+
+.lin {
+	background: url('@/assets/img/linux.svg');
+	background-position: bottom 30px right 30px;
+	background-size: 100px;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+.win {
+	background: url('@/assets/img/windows.svg');
+	background-position: bottom 30px right 30px;
+	background-size: 100px;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
