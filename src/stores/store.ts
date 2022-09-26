@@ -9,10 +9,13 @@ export const useStore = defineStore({
 		agree: false,
 		os: 'windows',
 		databaseAuth: 'Windows',
-		databaseName: 'DV\\SQL-2022',
+		server: '',
+		databaseName: '',
 		serverType: 'Microsoft SQL Server',
+		port: 5432,
 		login: '',
 		password: '',
+		cert: true,
 		items: [
 			{
 				id: 0,

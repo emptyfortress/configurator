@@ -15,17 +15,23 @@ q-page(padding)
 					q-input(v-else v-model="item.loglinux" type="text" label="Хранилище логов" color="accent" clearable)
 
 	.service.item.pad
-		.zag База данных
+		.zag База данных для хранения настроек
 		.form
-			.label.wide Тип сервера:
+			.label.wide Тип СУБД:
 			q-select(v-model="mystore.serverType" :options="servertypes"  dense color="accent").port
-			.label.wide Название базы:
+			.label.wide Сервер БД:
+			q-input(v-model="mystore.server" type="text" dense color="accent").port
+			template(v-if="mystore.serverType === 'PostgreSQL'")
+				.label.wide Порт:
+				q-input(v-model="mystore.port" type="number" dense color="accent").port
+			.label.wide Имя БД:
 			q-input(v-model="mystore.databaseName" type="text" dense color="accent").port
-			.label Аутентификация:
-			.q-gutter-lg
-				q-radio(color="accent" v-model="mystore.databaseAuth" val="Windows" label="Windows")
-				q-radio(color="accent" v-model="mystore.databaseAuth" val="SQL Server" label="SQL Server")
-			.label Логин:
+			template(v-if="mystore.serverType === 'Microsoft SQL Server'")
+				.label.wide Проверка подлинности:
+				.q-gutter-lg
+					q-radio(color="accent" v-model="mystore.databaseAuth" val="Windows" label="Windows")
+					q-radio(color="accent" v-model="mystore.databaseAuth" val="SQL Server" label="SQL Server")
+			.label Пользователь:
 			q-input(v-model="mystore.login" dense color="accent").port
 			.label Пароль:
 			q-input(v-model="mystore.password" :type="calcType" dense color="accent").port
@@ -34,8 +40,10 @@ q-page(padding)
 						q-icon(v-if="pass === true" name="mdi-eye-off")
 						q-icon(v-else name="mdi-eye")
 			.label
+			q-checkbox(v-model="mystore.cert" color="accent" label="Проверять сертификат сервера")
+			div
 			.row.justify-between.items-end
-				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading" :disable="checkPass" @click="simulateProgress").q-mt-lg
+				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading" :disable="checkPass" @click="simulateProgress")
 				q-icon(v-if="connection && validate" name="mdi-check-network" size="32px" color="positive")
 				q-icon(v-if="connection && !validate" name="mdi-alert" size="32px" color="negative").cursor-pointer
 					q-menu(padding)
@@ -161,7 +169,7 @@ const showApply = computed(() => {
 	font-size: 0.9rem;
 	width: 80px;
 	&.wide {
-		width: 150px;
+		width: 170px;
 	}
 }
 .form {
