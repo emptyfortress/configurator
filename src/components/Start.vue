@@ -11,8 +11,8 @@ q-page(padding)
 			br
 			q-expansion-item(dense label="Дополнительно")
 				q-card-section
-					q-input(v-if="mystore.os === 'windows'" v-model="item.log" type="text" label="Хранилище логов" color="accent" clearable)
-					q-input(v-else v-model="item.loglinux" type="text" label="Хранилище логов" color="accent" clearable)
+					q-input(v-if="mystore.os === 'windows'" v-model="item.log" type="text" label="Хранилище логов" color="accent" autogrow)
+					q-input(v-else v-model="item.loglinux" type="text" autogrow label="Хранилище логов" color="accent" )
 
 	.service.item.pad
 		.zag База данных для хранения настроек
@@ -40,7 +40,7 @@ q-page(padding)
 						q-icon(v-if="pass === true" name="mdi-eye-off")
 						q-icon(v-else name="mdi-eye")
 			.label
-			q-checkbox(v-model="mystore.cert" color="accent" label="Проверять сертификат сервера")
+			q-checkbox(v-model="mystore.checkCert" color="accent" label="Проверять сертификат сервера")
 			div
 			.row.justify-between.items-end
 				q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading" :disable="checkPass" @click="simulateProgress")
@@ -51,8 +51,7 @@ q-page(padding)
 
 	q-card-actions(align="center").service.item
 		transition(name="slide-botton")
-			q-btn(color="accent" flat label="Сбросить изменения" @click="resetAll" :disable="!showApply" icon="mdi-restore")
-				q-tooltip Вернуть значения по умолчанию
+			q-btn(color="accent" flat label="Значения по умолчанию" @click="resetAll" icon="mdi-restore")
 		q-btn(color="accent" unelevated label="Применить")
 
 </template>
@@ -112,33 +111,32 @@ const calcType = computed(() => {
 	} else return 'text'
 })
 
-// const reset = (e: any, i: number) => {
-// 	Object.assign(e, mystore.defaultItems[i])
-// }
-
 const resetAll = () => {
+	mystore.$reset()
+	connection.value = false
 	// mystore.items.forEach((_, index) => {
 	// 	Object.assign(mystore.items[index], mystore.defaultItems[index])
 	// })
 	// mystore.toggleRightDr()
-	connection.value = false
+	// connection.value = false
 }
 
-const showRefresh = (e: number) => {
-	if (JSON.stringify(mystore.items[e]) === JSON.stringify(mystore.defaultItems[e])) {
-		return (
-			false ||
-			mystore.databaseAuth === 'Windows' ||
-			mystore.serverType === 'Microsoft SQL Server' ||
-			mystore.databaseName === 'DV\\SQL-2022'
-		)
-	} else return true
-}
-const showApply = computed(() => {
-	let temp: Boolean[] = []
-	mystore.items.forEach((_, index) => temp.push(showRefresh(index)))
-	return temp.some((item) => item === true)
-})
+// const showRefresh = () => {
+// 	if (JSON.stringify(mystore.items[e]) === JSON.stringify(mystore.defaultItems[e])) {
+// 		return (
+// 			false ||
+// 			mystore.databaseAuth === 'Windows' ||
+// 			mystore.serverType === 'Microsoft SQL Server' ||
+// 			mystore.databaseName === 'DV\\SQL-2022'
+// 		)
+// 	} else return true
+// }
+
+// const showApply = computed(() => {
+// 	let temp: Boolean[] = []
+// 	mystore.items.forEach((_, index) => temp.push(showRefresh(index)))
+// 	return temp.some((item) => item === true)
+// })
 </script>
 
 <style scoped lang="scss">
@@ -203,15 +201,6 @@ const showApply = computed(() => {
 		padding: 1rem 2rem;
 	}
 }
-// .log {
-// 	display: flex;
-// 	justify-content: flex-start;
-// 	align-items: center;
-// 	gap: 1rem;
-// 	.q-input {
-// 		width: 60%;
-// 	}
-// }
 p {
 	font-size: 1rem;
 }

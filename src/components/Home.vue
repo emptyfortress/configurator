@@ -7,7 +7,7 @@
 	.head Ваша система:
 	.q-gutter-sm
 		q-radio(color="accent" v-model="mystore.os" val="windows" label="Windows")
-		q-radio(color="accent" v-model="mystore.os" val="linux" label="Linux (в том числе, через docker)")
+		q-radio(color="accent" v-model="mystore.os" val="linux" label="Linux")
 
 	.head Выберите тип настройки:
 	q-card-actions
@@ -15,7 +15,7 @@
 		q-btn(color="accent" to="/refresh" icon="mdi-reload" label="Обновление настроек" :disable="!mystore.agree")
 
 	q-dialog(v-model="lic")
-		q-card.lic
+		q-card(style="width: 1000px; max-width: 80vh;")
 			q-card-section.row.justify-between.items-center
 				.text-h6
 					img(src="@/assets/img/license.svg").license
@@ -64,7 +64,7 @@ const showLic = () => {
 	grid-template-columns: repeat(2, 1fr);
 	gap: 1rem;
 }
-.lic {
-	min-width: 900px;
-}
+// .q-dialog__inner--minimized > div {
+// 	max-width: 1000px;
+// }
 </style>
