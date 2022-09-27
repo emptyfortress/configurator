@@ -112,7 +112,7 @@ const print = () => {
 <style scoped lang="scss">
 .q-scrollarea {
 	padding: 0 2rem 0 0;
-	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	font-family: Georgia, Times, 'Times New Roman', serif;
 	font-size: 1rem;
 }
 </style>
