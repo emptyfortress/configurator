@@ -61,4 +61,7 @@ const minitoogle = computed(() => {
 		margin-right: 1rem;
 	}
 }
+.q-item.q-router-link--active {
+	background: #5642a6;
+}
 </style>
