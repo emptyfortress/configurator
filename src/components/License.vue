@@ -1,6 +1,6 @@
 <template lang="pug">
 q-card-section
-	q-scroll-area(style="height: 70vh;")
+	q-scroll-area(style="height: 70vh;" id="printMe")
 		p Настоящее лицензионное соглашение (далее по тексту – Соглашение) представляет собой соглашение, заключаемое между <strong>ООО «ДоксВижн»</strong> (далее по тексту – <strong>Правообладатель</strong>), являющимся обладателем исключительных прав на программу для ЭВМ <strong>«Docsvision 5», «Docsvision 4.5», «Docsvision Core»</strong>  и <strong>иные программы для ЭВМ</strong> (далее по тексту – ПО), и физическим или юридическим лицом, имеющим намерение использовать ПО непосредственно в своей хозяйственной деятельности, без полномочий на передачу прав на использование ПО третьим лицам (далее по тексту - Лицензиат,  Конечный пользователь).
 		p Условия настоящего Лицензионного соглашения распространяются на все программы для ЭВМ, исключительные права на которые принадлежат Правообладателю.
 		p Лицензиат и Правообладатель далее по тексту совместно именуются <strong>Стороны</strong>, а по отдельности – <strong>Сторона</strong>.
@@ -83,14 +83,33 @@ q-card-section
 
 q-separator
 q-card-actions(align="center")
-	q-btn(flat label="Печать" icon="mdi-printer")
+	q-btn(flat label="Печать" icon="mdi-printer" @click="print")
 	q-btn(flat label="Закрыть" v-close-popup)
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const print = () => {
+	var prtContent = document.getElementById('printMe')
+	var WinPrint = window.open(
+		'',
+		'',
+		'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0'
+	)
+	WinPrint?.document.write(`<!DOCTYPE html>
+		<html>
+			<body>
+				<h4>Лицензионное соглашение с конечным пользователем</h4>
+				${prtContent?.innerHTML}
+			</body>
+		</html>`)
+	WinPrint?.document.close()
+	WinPrint?.focus()
+	WinPrint?.print()
+	WinPrint?.close()
+}
+</script>
 
 <style scoped lang="scss">
-//@import '@/assets/css/colors.scss';
 .q-scrollarea {
 	padding: 0 2rem 0 0;
 	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
