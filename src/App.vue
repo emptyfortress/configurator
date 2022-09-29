@@ -8,13 +8,6 @@ import { useStore } from '@/stores/store'
 const mystore = useStore()
 const route = useRoute()
 const en = ref(false)
-
-const calcClass = computed(() => {
-	if (mystore.os === 'linux') {
-		return 'lin'
-	}
-	return 'win'
-})
 </script>
 
 <template lang="pug">
@@ -30,16 +23,15 @@ q-layout(view="LHh lpR fFf")
 			q-btn(flat round @click="en = !en")
 				img(v-if="en" src="@/assets/img/icons/us.svg" width="24")
 				img(v-else src="@/assets/img/icons/russia.svg" width="24")
-			//- q-btn(flat round icon="mdi-brightness-4" color="black" @click="dark = !dark")
-			//- q-btn(dense flat round icon="menu" @click="mystore.toggleRightDr")
 	RDrawer
 	Drawer
 	q-page-container
 		router-view(v-slot="{ Component, route }")
 			transition(name="fade" mode="out-in")
 				component(:is="Component")
-img(v-if="mystore.os === 'windows'" src="@/assets/img/windows.svg").logo
-img(v-else src="@/assets/img/linux.svg").logo
+transition(name="fade")
+	img(v-if="mystore.os === 'windows'" src="@/assets/img/windows.svg").logo
+	img(v-else src="@/assets/img/linux.svg").logo
 </template>
 
 <style scoped lang="scss">

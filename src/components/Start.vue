@@ -10,7 +10,7 @@ q-page(padding)
 				q-input(v-model="item.port" type="number" dense color="accent").port
 			br
 			q-expansion-item(dense label="Дополнительно")
-				q-card-section
+				q-card-section.q-pt-none
 					q-input(v-if="mystore.os === 'windows'" v-model="item.log" type="text" label="Хранилище логов" color="accent" autogrow)
 					q-input(v-else v-model="item.loglinux" type="text" autogrow label="Хранилище логов" color="accent" )
 
@@ -70,7 +70,12 @@ const loading = ref(false)
 const connection = ref(false)
 
 const checkPass = computed(() => {
-	if (mystore.login.length > 2 && mystore.password.length > 2) {
+	if (
+		mystore.login.length > 2 &&
+		mystore.password.length > 2 &&
+		mystore.databaseName.length > 2 &&
+		mystore.server.length > 2
+	) {
 		return false
 	}
 	return true
@@ -85,7 +90,7 @@ const validate = computed(() => {
 
 const simulateProgress = () => {
 	loading.value = true
-	const output = document.querySelector('#output')
+	// const output = document.querySelector('#output')
 	setTimeout(() => {
 		loading.value = false
 		connection.value = true
@@ -100,8 +105,8 @@ const simulateProgress = () => {
 				message: 'Сервер не отвечает',
 				color: 'negative',
 			})
-			mystore.rightDrawer = true
-			output!.innerHTML = new Date() + '<br />' + 'Some error messages'
+			// mystore.rightDrawer = true
+			// output!.innerHTML = new Date() + '<br />' + 'Some error messages'
 		}
 	}, 2000)
 }
