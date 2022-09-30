@@ -25,7 +25,7 @@ q-layout(view="LHh lpR fFf")
 	RDrawer
 	Drawer
 	q-page-container
-		router-view(v-slot="{ Component, route }")
+		router-view(v-slot="{ Component }")
 			transition(name="fade" mode="out-in")
 				component(:is="Component")
 transition(name="fade")
