@@ -1,12 +1,11 @@
 <template lang="pug">
 q-page(padding)
 	.grid
-		div
-			.service
-				p Укажите адрес запущенного сервиса настроек:
-				q-input(v-model="ser" type="text" dense color="accent" clearable @clear="ser = ''" autogrow).port.q-ml-none
-		.get
-			q-btn(v-if="method === 'one'" color="accent" :disable="check" label="Получить настройки" @click="getSettings" :loading="loading")
+		.service
+			.text-right Укажите адрес запущенного сервиса настроек:
+			q-input(v-model="ser" type="text" dense color="accent" clearable @clear="ser = ''" autogrow).port.q-ml-none
+			.get
+				q-btn(v-if="method === 'one'" color="accent" :disable="check" label="Получить настройки" @click="getSettings" :loading="loading")
 
 	transition(name="fade")
 		.q-mt-lg(v-if="showSettings")
@@ -23,9 +22,8 @@ q-page(padding)
 			q-card-actions(align="right")
 				q-btn(flat color="accent" label="Отмена" v-close-popup)
 				q-space
-				div
-					q-btn(flat color="accent" label="Повторить" v-close-popup)
-					q-btn(flat color="accent" @click="restart" label="Ввести настройки заново" v-close-popup)
+				q-btn(flat color="accent" label="Повторить" v-close-popup)
+				q-btn(color="accent" @click="restart" label="Ввести настройки заново" v-close-popup)
 </template>
 
 <script setup lang="ts">
@@ -74,12 +72,13 @@ const restart = () => {
 <style scoped lang="scss">
 //@import '@/assets/css/colors.scss';
 .grid {
-	max-width: 900px;
+	max-width: 1200px;
 	margin: 0 auto;
-	display: grid;
-	grid-template-columns: 1fr auto;
-	gap: 2rem;
-	font-size: 0.9rem;
+	.service {
+		display: grid;
+		grid-template-columns: 200px 1fr auto;
+		gap: 1rem;
+	}
 }
 .get {
 	align-self: center;
