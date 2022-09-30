@@ -6,7 +6,7 @@ export const useStore = defineStore({
 		leftDrawer: true,
 		rightDrawer: false,
 		mini: false,
-		agree: true,
+		agree: false,
 		os: 'windows',
 		databaseAuth: 'Windows',
 		connection: false,
