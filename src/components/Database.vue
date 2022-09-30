@@ -5,21 +5,21 @@
 		.label.wide Тип СУБД:
 		q-select(v-model="mystore.serverType" :options="servertypes"  dense color="accent").port
 		.label.wide Сервер БД:
-		q-input(v-model="mystore.server" type="text" dense color="accent" clearable).port
+		q-input(v-model="mystore.server" type="text" dense color="accent" clearable @clear="mystore.server = ''").port
 		template(v-if="mystore.serverType === 'PostgreSQL'")
 			.label.wide Порт:
 			q-input(v-model="mystore.port" type="number" dense color="accent").port
 		.label.wide Имя БД:
-		q-input(v-model="mystore.databaseName" type="text" dense color="accent" clearable).port
+		q-input(v-model="mystore.databaseName" type="text" dense color="accent" clearable @clear="mystore.databaseName = ''").port
 		template(v-if="mystore.serverType === 'Microsoft SQL Server'")
 			.label.wide Проверка подлинности:
 			.q-gutter-lg
 				q-radio(color="accent" v-model="mystore.databaseAuth" val="Windows" label="Windows")
 				q-radio(color="accent" v-model="mystore.databaseAuth" val="SQL Server" label="SQL Server")
 		.label Пользователь:
-		q-input(v-model="mystore.login" dense color="accent" clearable).port
+		q-input(v-model="mystore.login" dense color="accent" clearable @clear="mystore.login = ''").port
 		.label Пароль:
-		q-input(v-model="mystore.password" :type="calcType" dense color="accent" clearable).port
+		q-input(v-model="mystore.password" :type="calcType" dense color="accent" clearable @clear="mystore.password = ''").port
 			template(v-slot:append)
 				q-btn(dense flat round @click="pass = !pass")
 					q-icon(v-if="pass === true" name="mdi-eye-off")

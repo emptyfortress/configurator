@@ -2,7 +2,7 @@
 q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bordered).left
 	.logo
 		img(src="@/assets/img/logo.svg" width="40" @click="mystore.toggleRightDr").cursor-pointer
-		span(v-if="!mystore.mini") Конфигуратор ДВ
+		span(v-if="!mystore.mini") Конфигуратор dv
 	br
 	br
 	q-list
@@ -16,7 +16,7 @@ q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bor
 			q-item-section Первичная настройка
 		q-item(clickable to="/refresh" :disable="!mystore.agree")
 			q-item-section(avatar)
-				q-icon(name="mdi-autorenew")
+				q-icon(name="mdi-cached")
 			q-item-section Обновление настроек
 
 
