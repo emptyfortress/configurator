@@ -51,17 +51,62 @@ h6 {
 	font-family: monospace;
 }
 
-.lin {
-	background: url('@/assets/img/linux.svg');
-	background-position: bottom 30px right 30px;
-	background-size: 100px;
-	background-repeat: no-repeat;
-	// background-attachment: fixed;
+// .lin {
+// 	background: url('@/assets/img/linux.svg');
+// 	background-position: bottom 30px right 30px;
+// 	background-size: 100px;
+// 	background-repeat: no-repeat;
+// 	// background-attachment: fixed;
+// }
+// .win {
+// 	background: url('@/assets/img/windows.svg');
+// 	background-position: bottom 30px right 30px;
+// 	background-size: 100px;
+// 	background-repeat: no-repeat;
+// 	// background-attachment: fixed;
+// }
+
+.service {
+	padding: 1rem;
+	background: var(--bg-main);
+	box-shadow: 4px 4px 9px rgba(0, 0, 0, 0.2), -4px -4px 4px rgba(255, 255, 255, 1);
+	border-radius: 4px;
+	align-self: start;
 }
-.win {
-	background: url('@/assets/img/windows.svg');
-	background-position: bottom 30px right 30px;
-	background-size: 100px;
-	background-repeat: no-repeat;
-	// background-attachment: fixed;
+
+.zag {
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 1rem;
+	height: 32px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.label {
+	font-size: 0.9rem;
+	width: 80px;
+	&.wide {
+		width: 170px;
+	}
+}
+.form {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0.5rem;
+	> div {
+		align-self: center;
+		white-space: no-wrap;
+	}
+	.ful {
+		grid-column: 1/-1;
+		font-size: 1.1rem;
+		&.small {
+			font-size: 0.9rem;
+		}
+	}
+}
+p {
+	font-size: 1rem;
+	text-align: center;
 }

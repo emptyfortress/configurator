@@ -9,6 +9,7 @@ export const useStore = defineStore({
 		agree: false,
 		os: 'windows',
 		databaseAuth: 'Windows',
+		connection: false,
 		server: '',
 		databaseName: '',
 		serverType: 'Microsoft SQL Server',
@@ -73,6 +74,9 @@ export const useStore = defineStore({
 		},
 		toggleMini() {
 			this.mini = !this.mini
+		},
+		setConnection(payload: boolean) {
+			this.connection = payload
 		},
 	},
 })

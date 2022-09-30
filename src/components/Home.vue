@@ -12,7 +12,7 @@
 	.head Выберите тип настройки:
 	q-card-actions
 		q-btn(color="accent" to="/start" icon="mdi-tools" label="Первичная настройка" :disable="!mystore.agree")
-		q-btn(color="accent" to="/refresh" icon="mdi-reload" label="Обновление настроек" :disable="!mystore.agree")
+		q-btn(color="accent" to="/refresh" icon="mdi-cached" label="Обновление настроек" :disable="!mystore.agree")
 
 	q-dialog(v-model="lic")
 		q-card(style="width: 1000px; max-width: 80vh;")

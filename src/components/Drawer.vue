@@ -16,7 +16,7 @@ q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bor
 			q-item-section Первичная настройка
 		q-item(clickable to="/refresh" :disable="!mystore.agree")
 			q-item-section(avatar)
-				q-icon(name="mdi-reload")
+				q-icon(name="mdi-autorenew")
 			q-item-section Обновление настроек
 
 
