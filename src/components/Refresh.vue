@@ -13,7 +13,7 @@ q-page(padding)
 			form(ref="target")
 				component(:is="Database")
 		.get
-			q-btn(v-if="method === 'two'" color="accent" :disable="check" label="Получить настройки")
+			q-btn(v-if="method === 'two'" color="accent" :disable="check1" label="Получить настройки")
 
 </template>
 
