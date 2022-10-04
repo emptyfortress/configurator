@@ -2,7 +2,7 @@
 q-page(padding)
 	.grid
 		.service
-			.text-right Укажите адрес запущенного сервиса настроек:
+			.adress Адрес активного сервиса настроек:
 			q-input(v-model="ser" type="text" dense color="accent" clearable @clear="ser = ''" autogrow).port.q-ml-none
 			.get
 				q-btn(v-if="method === 'one'" color="accent" :disable="check" label="Получить настройки" @click="getSettings" :loading="loading")
@@ -76,8 +76,11 @@ const restart = () => {
 	margin: 0 auto;
 	.service {
 		display: grid;
-		grid-template-columns: 200px 1fr auto;
+		grid-template-columns: auto 1fr auto;
 		gap: 1rem;
+		.adress {
+			align-self: center;
+		}
 	}
 }
 .get {

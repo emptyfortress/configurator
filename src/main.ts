@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Quasar, Notify } from 'quasar'
+import { Quasar, Notify, Loading } from 'quasar'
 import '@quasar/extras/mdi-v6/mdi-v6.css'
 import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/src/css/index.sass'
@@ -15,6 +15,7 @@ const myApp = createApp(App)
 myApp.use(Quasar, {
 	plugins: {
 		Notify,
+		Loading,
 	}, // import Quasar plugins and add here
 	config: {
 		notify: {
@@ -24,6 +25,11 @@ myApp.use(Quasar, {
 			icon: 'mdi-alert',
 			color: 'primary',
 			classes: 'notific',
+		},
+		loading: {
+			delay: 100,
+			html: true,
+			spinnerSize: 120,
 		},
 	},
 	supportTS: {

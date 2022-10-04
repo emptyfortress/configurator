@@ -13,20 +13,49 @@
 				q-input(v-else v-model="item.loglinux" type="text" autogrow label="Хранилище логов" color="accent" )
 
 Database
-q-card-actions(align="center").service.item
-	q-btn(color="accent" flat label="Значения по умолчанию" @click="resetAll" icon="mdi-restore")
-	q-btn(color="accent" unelevated label="Применить")
+.service.item
+	q-card-actions(align="center")
+		q-btn(color="accent" flat label="Значения по умолчанию" @click="resetAll" icon="mdi-restore")
+		q-btn(color="accent" unelevated label="Применить" @click="apply")
+	template(v-if="applying")
+		h4 fuck
 </template>
 
 <script setup lang="ts">
+import { ref, onBeforeUnmount } from 'vue'
+import { useQuasar } from 'quasar'
 import Database from '@/components/Database.vue'
 import { useStore } from '@/stores/store'
 
 const mystore = useStore()
+const applying = ref(false)
+const $q = useQuasar()
 
 const resetAll = () => {
 	mystore.$reset()
 	// mystore.toggleRightDr()
+}
+
+let timer: any
+
+onBeforeUnmount(() => {
+	if (timer !== void 0) {
+		clearTimeout(timer)
+		$q.loading.hide()
+	}
+})
+const apply = () => {
+	// applying.value = true
+	$q.loading.show({
+		message:
+			'<h6 style="text-align: center;">Пожалуйста, подождите.<br />Применяем настройки...</h6>',
+	})
+
+	// hiding in 2s
+	timer = setTimeout(() => {
+		$q.loading.hide()
+		timer = void 0
+	}, 2000)
 }
 </script>
 
