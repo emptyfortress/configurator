@@ -16,39 +16,40 @@ Database
 .service.item
 	q-card-actions(align="center")
 		q-btn(color="accent" flat label="Значения по умолчанию" @click="resetAll" icon="mdi-restore")
-		q-btn(color="accent" unelevated label="Применить" @click="apply")
+		q-btn(color="accent" unelevated :disable="fill" label="Применить" @click="apply")
 
-q-dialog(v-model="applying")
-	.column
-		q-card
-			q-card-section
-				q-card-section(horizontal)
-					q-icon(name="mdi-check-bold" size="90px" color="positive")
-					q-card-section
-						div Модуль "Docsvision 5 консоль управления" готов к использованию и доступен по адресу:
-						a(href="https://ya.ru") https://yandex.ru
-			q-card-actions(align="center")
-				q-btn(flat color="accent" label="Закрыть" v-close-popup)
+q-dialog(v-model="valid")
+	q-card
+		q-card-section
+			q-card-section(horizontal)
+				q-icon(name="mdi-check-bold" size="90px" color="positive")
+				q-card-section
+					div Модуль "Docsvision 5 консоль управления" готов к использованию и доступен по адресу:
+					a(href="https://ya.ru") https://yandex.ru
+		q-card-actions(align="center")
+			q-btn(flat color="accent" label="Закрыть" v-close-popup)
 		br
-		q-card
-			q-card-section
-				q-card-section(horizontal)
-					q-icon(name="mdi-alert" size="80px" color="negative")
-					q-card-section
-						div Возникла ошибка. Проверьте настройки или обратитесь к вашему администратору
-			q-card-actions(align="center")
-				q-btn(flat color="accent" label="Закрыть" v-close-popup)
+q-dialog(v-model="invalid")
+	q-card
+		q-card-section
+			q-card-section(horizontal)
+				q-icon(name="mdi-alert" size="80px" color="negative")
+				q-card-section
+					div Возникла ошибка. Проверьте настройки или обратитесь к вашему администратору
+		q-card-actions(align="center")
+			q-btn(flat color="accent" label="Закрыть" v-close-popup)
 
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, computed, onBeforeUnmount } from 'vue'
 import { useQuasar } from 'quasar'
 import Database from '@/components/Database.vue'
 import { useStore } from '@/stores/store'
 
 const mystore = useStore()
-const applying = ref(false)
+const valid = ref(false)
+const invalid = ref(false)
 const $q = useQuasar()
 
 const resetAll = () => {
@@ -65,7 +66,17 @@ onBeforeUnmount(() => {
 	}
 })
 
-const last = ref()
+const fill = computed(() => {
+	if (
+		mystore.server.length > 2 &&
+		mystore.databaseName.length > 2 &&
+		mystore.login.length > 1 &&
+		mystore.password.length > 2
+	) {
+		return false
+	} else return true
+})
+
 const apply = () => {
 	$q.loading.show({
 		message:
@@ -74,7 +85,14 @@ const apply = () => {
 
 	timer = setTimeout(() => {
 		$q.loading.hide()
-		applying.value = true
+		if (
+			mystore.server === 'VEGA\\MSSQL2017' &&
+			mystore.databaseName === 'Test' &&
+			mystore.login === 'kmg01' &&
+			mystore.password === 'kmg001'
+		) {
+			valid.value = true
+		} else invalid.value = true
 		timer = void 0
 	}, 3000)
 }
