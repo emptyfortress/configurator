@@ -17,8 +17,28 @@ Database
 	q-card-actions(align="center")
 		q-btn(color="accent" flat label="Значения по умолчанию" @click="resetAll" icon="mdi-restore")
 		q-btn(color="accent" unelevated label="Применить" @click="apply")
-	template(v-if="applying")
-		h4 fuck
+
+q-dialog(v-model="applying")
+	.column
+		q-card
+			q-card-section
+				q-card-section(horizontal)
+					q-icon(name="mdi-check-bold" size="90px" color="positive")
+					q-card-section
+						div Модуль "Docsvision 5 консоль управления" готов к использованию и доступен по адресу:
+						a(href="https://ya.ru") https://yandex.ru
+			q-card-actions(align="center")
+				q-btn(flat color="accent" label="Закрыть" v-close-popup)
+		br
+		q-card
+			q-card-section
+				q-card-section(horizontal)
+					q-icon(name="mdi-alert" size="80px" color="negative")
+					q-card-section
+						div Возникла ошибка. Проверьте настройки или обратитесь к вашему администратору
+			q-card-actions(align="center")
+				q-btn(flat color="accent" label="Закрыть" v-close-popup)
+
 </template>
 
 <script setup lang="ts">
@@ -44,18 +64,19 @@ onBeforeUnmount(() => {
 		$q.loading.hide()
 	}
 })
+
+const last = ref()
 const apply = () => {
-	// applying.value = true
 	$q.loading.show({
 		message:
 			'<h6 style="text-align: center;">Пожалуйста, подождите.<br />Применяем настройки...</h6>',
 	})
 
-	// hiding in 2s
 	timer = setTimeout(() => {
 		$q.loading.hide()
+		applying.value = true
 		timer = void 0
-	}, 2000)
+	}, 3000)
 }
 </script>
 
@@ -74,6 +95,7 @@ const apply = () => {
 	width: 600px;
 	margin: 0 auto;
 	margin-top: 2rem;
+	font-size: 1rem;
 	.q-card {
 		background: transparent;
 	}
