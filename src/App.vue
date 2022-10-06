@@ -19,9 +19,10 @@ q-layout(view="LHh lpR fFf")
 				span(v-if="mystore.os === 'windows' && route.fullPath !== '/'").q-ml-md (windows)
 				span(v-if="mystore.os === 'linux' && route.fullPath !== '/'").q-ml-md (linux)
 
-			q-btn(flat round @click="en = !en")
-				img(v-if="en" src="@/assets/img/icons/us.svg" width="24")
-				img(v-else src="@/assets/img/icons/russia.svg" width="24")
+			//- q-btn(flat round @click="en = !en")
+			//- 	img(v-if="en" src="@/assets/img/icons/us.svg" width="24")
+			//- 	img(v-else src="@/assets/img/icons/russia.svg" width="24")
+			q-btn(flat round @click="mystore.toggleRightDr" icon="mdi-console-line")
 	RDrawer
 	Drawer
 	q-page-container

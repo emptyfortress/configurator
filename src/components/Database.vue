@@ -69,7 +69,7 @@ const validate = computed(() => {
 
 const simulateProgress = () => {
 	loading.value = true
-	// const output = document.querySelector('#output')
+	const output = document.querySelector('#output')
 	setTimeout(() => {
 		loading.value = false
 		mystore.setConnection(true)
@@ -84,8 +84,8 @@ const simulateProgress = () => {
 				message: 'Сервер не отвечает',
 				color: 'negative',
 			})
-			// mystore.rightDrawer = true
-			// output!.innerHTML = new Date() + '<br />' + 'Some error messages'
+			mystore.rightDrawer = true
+			output!.innerHTML = new Date() + '<br />' + 'Some error messages here'
 		}
 	}, 2000)
 }

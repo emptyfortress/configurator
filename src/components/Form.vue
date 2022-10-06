@@ -35,9 +35,10 @@ q-dialog(v-model="invalid")
 			q-card-section(horizontal)
 				q-icon(name="mdi-alert" size="80px" color="negative")
 				q-card-section
-					div Возникла ошибка. Проверьте настройки или обратитесь к вашему администратору
+					div Возникла ошибка. Полный лог сообщения об ошибке выведен в консоли.
 		q-card-actions(align="center")
 			q-btn(flat color="accent" label="Закрыть" v-close-popup)
+			q-btn(flat color="accent" label="Открыть консоль" v-close-popup @click="open")
 
 </template>
 
@@ -95,6 +96,11 @@ const apply = () => {
 		} else invalid.value = true
 		timer = void 0
 	}, 3000)
+}
+const open = () => {
+	const output = document.querySelector('#output')
+	mystore.toggleRightDr()
+	output!.innerHTML = new Date() + '<br />' + 'Some error messages here'
 }
 </script>
 

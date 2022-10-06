@@ -41,7 +41,7 @@ const showSettings = ref(false)
 const method = ref('one')
 
 const check = computed(() => {
-	if (ser.value.length > 3) {
+	if (ser.value.length > 1) {
 		return false
 	} else return true
 })
@@ -56,8 +56,8 @@ const getSettings = () => {
 	} else {
 		mystore.server = 'data here'
 		mystore.databaseName = 'data here'
-		mystore.login = 'data here'
-		mystore.password = 'data here'
+		mystore.login = 'kmg01'
+		mystore.password = 'kmg001'
 		setTimeout(() => {
 			showSettings.value = true
 			loading.value = false
