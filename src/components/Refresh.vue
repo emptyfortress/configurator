@@ -29,10 +29,7 @@ q-page(padding)
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import Form from '@/components/Form.vue'
-import { useStore } from '@/stores/store'
 import { router } from '@/router/router'
-
-const mystore = useStore()
 
 const ser = ref('')
 const dialog = ref(false)
@@ -48,16 +45,13 @@ const check = computed(() => {
 
 const getSettings = () => {
 	loading.value = true
-	if (ser.value === '1111') {
+	if (ser.value === 'err') {
+		showSettings.value = false
 		setTimeout(() => {
 			dialog.value = true
 			loading.value = false
 		}, 3000)
 	} else {
-		mystore.server = 'data here'
-		mystore.databaseName = 'data here'
-		mystore.login = 'kmg01'
-		mystore.password = 'kmg001'
 		setTimeout(() => {
 			showSettings.value = true
 			loading.value = false
