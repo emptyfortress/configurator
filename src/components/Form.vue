@@ -1,6 +1,6 @@
 <template lang="pug">
 .grid
-	.service(v-for="item in mystore.items" :key="item.id")
+	.service(v-for="item in mystore.settings.topBlocks" :key="item.id")
 		.zag
 			|{{ item.label}}
 		.form
@@ -9,7 +9,7 @@
 		br
 		q-expansion-item(dense label="Дополнительно")
 			q-card-section.q-pt-none
-				q-input(v-if="mystore.os === 'windows'" v-model="item.log" type="text" label="Хранилище логов" color="accent" autogrow)
+				q-input(v-if="mystore.settings.os === 'windows'" v-model="item.log" type="text" label="Хранилище логов" color="accent" autogrow)
 				q-input(v-else v-model="item.loglinux" type="text" autogrow label="Хранилище логов" color="accent" )
 
 Database
@@ -18,27 +18,8 @@ Database
 		q-btn(color="accent" flat label="Значения по умолчанию" @click="resetAll" icon="mdi-restore")
 		q-btn(color="accent" unelevated :disable="fill" label="Применить" @click="apply")
 
-q-dialog(v-model="valid")
-	q-card
-		q-card-section
-			q-card-section(horizontal)
-				q-icon(name="mdi-check-bold" size="90px" color="positive")
-				q-card-section
-					div Модуль "Docsvision 5 консоль управления" готов к использованию и доступен по адресу:
-					a(href="https://ya.ru") https://yandex.ru
-		q-card-actions(align="center")
-			q-btn(flat color="accent" label="Закрыть" v-close-popup)
-		br
-q-dialog(v-model="invalid")
-	q-card
-		q-card-section
-			q-card-section(horizontal)
-				q-icon(name="mdi-alert" size="80px" color="negative")
-				q-card-section
-					div Возникла ошибка. Полный лог сообщения об ошибке выведен в консоли.
-		q-card-actions(align="center")
-			q-btn(flat color="accent" label="Закрыть" v-close-popup)
-			q-btn(flat color="accent" label="Открыть консоль" v-close-popup @click="open")
+ValidDialog(v-model="valid")
+InvalidDialog(v-model="invalid")
 
 </template>
 
@@ -46,6 +27,9 @@ q-dialog(v-model="invalid")
 import { ref, computed, onBeforeUnmount } from 'vue'
 import { useQuasar } from 'quasar'
 import Database from '@/components/Database.vue'
+import ValidDialog from '@/components/ValidDialog.vue'
+import InvalidDialog from '@/components/InvalidDialog.vue'
+
 import { useStore } from '@/stores/store'
 
 const mystore = useStore()
@@ -69,10 +53,10 @@ onBeforeUnmount(() => {
 
 const fill = computed(() => {
 	if (
-		mystore.server.length > 2 &&
-		mystore.databaseName.length > 2 &&
-		mystore.login.length > 1 &&
-		mystore.password.length > 2
+		mystore.settings.database.server.length > 2 &&
+		mystore.settings.database.name.length > 2 &&
+		mystore.settings.database.login.length > 1 &&
+		mystore.settings.database.password.length > 2
 	) {
 		return false
 	} else return true
@@ -87,10 +71,10 @@ const apply = () => {
 	timer = setTimeout(() => {
 		$q.loading.hide()
 		if (
-			mystore.server === 'VEGA\\MSSQL2017' &&
-			mystore.databaseName === 'Test' &&
-			mystore.login === 'kmg01' &&
-			mystore.password === 'kmg001'
+			mystore.settings.database.server === 'VEGA\\MSSQL2017' &&
+			mystore.settings.database.name === 'Test' &&
+			mystore.settings.database.login === 'kmg01' &&
+			mystore.settings.database.password === 'kmg001'
 		) {
 			valid.value = true
 		} else invalid.value = true
@@ -101,6 +85,9 @@ const open = () => {
 	const output = document.querySelector('#output')
 	mystore.toggleRightDr()
 	output!.innerHTML = new Date() + '<br />' + 'Some error messages here'
+}
+const saveJson = () => {
+	let file = mystore.settings
 }
 </script>
 
@@ -126,5 +113,8 @@ const open = () => {
 	&.pad {
 		padding: 1rem 2rem;
 	}
+}
+.nounder {
+	text-decoration: none;
 }
 </style>

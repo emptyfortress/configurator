@@ -3,57 +3,51 @@
 	.zag База данных для хранения настроек
 	.form
 		.label.wide Тип СУБД:
-		q-select(v-model="mystore.serverType" :options="servertypes"  dense color="accent").port
+		q-select(v-model="mystore.settings.database.serverType" :options="mystore.settings.database.serverTypesOptions"  dense color="accent").port
 		.label.wide Сервер БД:
-		q-input(v-model="mystore.server" type="text" dense color="accent" clearable @clear="mystore.server = ''").port
-		template(v-if="mystore.serverType === 'PostgreSQL'")
+		q-input(v-model="mystore.settings.database.server" type="text" dense color="accent" clearable @clear="mystore.settings.database.server = ''").port
+		template(v-if="mystore.settings.database.serverType === 'PostgreSQL'")
 			.label.wide Порт:
-			q-input(v-model="mystore.port" type="number" dense color="accent").port
+			q-input(v-model="mystore.settings.database.port" type="number" dense color="accent").port
 		.label.wide Имя БД:
-		q-input(v-model="mystore.databaseName" type="text" dense color="accent" clearable @clear="mystore.databaseName = ''").port
-		template(v-if="mystore.serverType === 'Microsoft SQL Server'")
+		q-input(v-model="mystore.settings.database.name" type="text" dense color="accent" clearable @clear="mystore.settings.database.name = ''").port
+		template(v-if="mystore.settings.database.serverType === 'Microsoft SQL Server'")
 			.label.wide Проверка подлинности:
 			.q-gutter-lg
-				q-radio(color="accent" v-model="mystore.databaseAuth" val="Windows" label="Windows")
-				q-radio(color="accent" v-model="mystore.databaseAuth" val="SQL Server" label="SQL Server")
+				q-radio(color="accent" v-model="mystore.settings.database.auth" val="Windows" label="Windows")
+				q-radio(color="accent" v-model="mystore.settings.database.auth" val="SQL Server" label="SQL Server")
 		.label Пользователь:
-		q-input(v-model="mystore.login" dense color="accent" clearable @clear="mystore.login = ''").port
+		q-input(v-model="mystore.settings.database.login" dense color="accent" clearable @clear="mystore.settings.database.login = ''").port
 		.label Пароль:
-		q-input(v-model="mystore.password" :type="calcType" dense color="accent" clearable @clear="mystore.password = ''").port
+		q-input(v-model="mystore.settings.database.password" :type="calcType" dense color="accent" clearable @clear="mystore.settings.database.password = ''").port
 			template(v-slot:append)
 				q-btn(dense flat round @click="pass = !pass")
 					q-icon(v-if="pass === true" name="mdi-eye-off")
 					q-icon(v-else name="mdi-eye")
 		.label
-		q-checkbox(v-model="mystore.checkCert" color="accent" label="Проверять сертификат сервера")
+		q-checkbox(v-model="mystore.settings.database.checkCert" color="accent" label="Проверять сертификат сервера")
 		div
 		.row.justify-between.items-end
 			q-btn(flat color="accent" label="Проверка соединения" size="md" :loading="loading" :disable="checkPass" @click="simulateProgress")
-			q-icon(v-if="mystore.connection && validate" name="mdi-check-network" size="32px" color="positive")
-			q-icon(v-if="mystore.connection && !validate" name="mdi-alert" size="32px" color="negative").cursor-pointer
-				q-menu(padding)
-					q-card-section Сервер не отвечает :(
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useStore } from '@/stores/store'
 import { useQuasar } from 'quasar'
-import { servertypes } from '@/stores/data'
 
 const mystore = useStore()
 const $q = useQuasar()
 
 const pass = ref(true)
 const loading = ref(false)
-// const connection = ref(false)
 
 const checkPass = computed(() => {
 	if (
-		mystore.login.length > 2 &&
-		mystore.password.length > 2 &&
-		mystore.databaseName.length > 2 &&
-		mystore.server.length > 2
+		mystore.settings.database.login.length > 2 &&
+		mystore.settings.database.password.length > 2 &&
+		mystore.settings.database.name.length > 2 &&
+		mystore.settings.database.server.length > 2
 	) {
 		return false
 	}
@@ -61,7 +55,10 @@ const checkPass = computed(() => {
 })
 
 const validate = computed(() => {
-	if (mystore.login === 'kmg01' && mystore.password === 'kmg001') {
+	if (
+		mystore.settings.database.login === 'kmg01' &&
+		mystore.settings.database.password === 'kmg001'
+	) {
 		return true
 	}
 	return false
@@ -88,6 +85,7 @@ const simulateProgress = () => {
 			output!.innerHTML = new Date() + '<br />' + 'Some error messages here'
 		}
 	}, 2000)
+	mystore.setConnection(false)
 }
 const calcType = computed(() => {
 	if (pass.value === true) {

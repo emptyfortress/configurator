@@ -6,8 +6,8 @@
 		q-label Я согласен с <a href="#" @click.prevent="showLic">лицензионным соглашением</a> docsvision.
 	.head Ваша система:
 	.q-gutter-sm
-		q-radio(color="accent" v-model="mystore.os" val="windows" label="Windows")
-		q-radio(color="accent" v-model="mystore.os" val="linux" label="Linux")
+		q-radio(color="accent" v-model="mystore.settings.os" val="windows" label="Windows")
+		q-radio(color="accent" v-model="mystore.settings.os" val="linux" label="Linux")
 
 	.head Выберите тип настройки:
 	q-card-actions

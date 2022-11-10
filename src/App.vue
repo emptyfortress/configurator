@@ -16,8 +16,8 @@ q-layout(view="LHh lpR fFf")
 		q-toolbar.text-black
 			q-toolbar-title.q-ml-md
 				|{{route.meta.title}}
-				span(v-if="mystore.os === 'windows' && route.fullPath !== '/'").q-ml-md (windows)
-				span(v-if="mystore.os === 'linux' && route.fullPath !== '/'").q-ml-md (linux)
+				span(v-if="mystore.settings.os === 'windows' && route.fullPath !== '/'").q-ml-md (windows)
+				span(v-if="mystore.settings.os === 'linux' && route.fullPath !== '/'").q-ml-md (linux)
 
 			//- q-btn(flat round @click="en = !en")
 			//- 	img(v-if="en" src="@/assets/img/icons/us.svg" width="24")
@@ -30,7 +30,7 @@ q-layout(view="LHh lpR fFf")
 			transition(name="fade" mode="out-in")
 				component(:is="Component")
 transition(name="fade")
-	img(v-if="mystore.os === 'windows'" src="@/assets/img/windows.svg").logo
+	img(v-if="mystore.settings.os === 'windows'" src="@/assets/img/windows.svg").logo
 	img(v-else src="@/assets/img/linux.svg").logo
 </template>
 
