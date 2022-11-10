@@ -9,7 +9,7 @@ q-dialog(v-model="props.modelValue")
 					a(href="https://ya.ru") https://yandex.ru
 		q-separator
 		q-card-actions(align="right").q-px-md
-			q-btn(flat color="accent" label="Посмотреть json" v-close-popup @click="showJson")
+			q-btn(flat color="accent" label="Посмотреть json"  @click="showJson")
 			q-btn(flat color="accent" label="Закрыть" @click="close")
 		q-card-section(v-if="json")
 			pre {{ data }}
