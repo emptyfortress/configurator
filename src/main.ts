@@ -6,6 +6,7 @@ import 'quasar/src/css/index.sass'
 import '@/assets/styles/main.scss'
 import { createPinia } from 'pinia'
 import { router } from '@/router/router'
+import { MotionOnePlugin } from 'vue-motion-one'
 
 // import './style.css'
 import App from './App.vue'
@@ -57,4 +58,5 @@ myApp.use(Quasar, {
 // Assumes you have a <div id="app"></div> in your index.html
 myApp.use(createPinia())
 myApp.use(router)
+myApp.use(MotionOnePlugin)
 myApp.mount('#app')

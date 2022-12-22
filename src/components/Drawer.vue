@@ -1,8 +1,8 @@
 <template lang="pug">
-q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bordered).left
+q-drawer(v-model="show" dark side="left" :mini="store.mini" :width="width" bordered).left
 	.logo
-		img(src="@/assets/img/logo.svg" width="40" @click="mystore.toggleRightDr").cursor-pointer
-		span(v-if="!mystore.mini") Конфигуратор dv
+		component(:is="Logo")
+		span(v-if="!store.mini") Конфигуратор dv
 	br
 	br
 	q-list
@@ -10,33 +10,49 @@ q-drawer(v-model="show" dark side="left" :mini="mystore.mini" :width="width" bor
 			q-item-section(avatar)
 				q-icon(name="mdi-license")
 			q-item-section Лицензия
-		q-item(clickable to="/start" :disable="!mystore.agree")
+		q-item(clickable to="/start" :disable="!store.agree")
 			q-item-section(avatar)
 				q-icon(name="mdi-tools")
 			q-item-section Первичная настройка
-		q-item(clickable to="/refresh" :disable="!mystore.agree")
+		q-item(clickable to="/refresh" :disable="!store.agree")
 			q-item-section(avatar)
 				q-icon(name="mdi-cached")
 			q-item-section Обновление настроек
 
+	component(:is="Motion" :animate="{rotate: rot}" :transition="transition").mini
+		q-btn(round flat dense icon="mdi-backburger" @click="setMini")
 
-	q-btn(round flat dense :icon="minitoogle" @click="mystore.toggleMini").mini.gt-sm
-	a(href="https://docsvision.com/" v-if="!mystore.mini").dv
+	a(href="https://docsvision.com/" v-if="!store.mini").dv
 		img(src="@/assets/img/dv.svg")
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref } from 'vue'
 import { useStore } from '@/stores/store'
+import { Motion } from 'motion/vue'
+import { spring } from 'motion'
+import Logo from '@/components/Logo.vue'
 
-const mystore = useStore()
-
-const width = 256
+const store = useStore()
 const show = ref(true)
 
-const minitoogle = computed(() => {
-	return mystore.mini ? 'mdi-forwardburger' : 'mdi-backburger'
-})
+const rot = ref(0)
+
+const transition = {
+	easing: spring({
+		stiffness: 300,
+		damping: 17,
+	}),
+}
+
+const setMini = () => {
+	if (store.mini) {
+		rot.value = 0
+	} else rot.value = 180
+	store.toggleMini()
+}
+
+const width = 256
 </script>
 
 <style scoped lang="scss">
@@ -44,7 +60,6 @@ const minitoogle = computed(() => {
 	position: absolute;
 	bottom: 0.5rem;
 	left: 0.5rem;
-	overflow-x: hidden;
 }
 .dv {
 	position: absolute;
@@ -55,11 +70,10 @@ const minitoogle = computed(() => {
 .logo {
 	font-size: 1.1rem;
 	padding: 0.5rem;
-	overflow: hidden;
-	img {
-		vertical-align: middle;
-		margin-right: 1rem;
-	}
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: 1rem;
 }
 .q-item.q-router-link--active {
 	background: #5642a6;

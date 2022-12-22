@@ -11,9 +11,11 @@
   "dependencies": {
     "@quasar/extras": "^1.13.6",
     "@vueuse/core": "^9.3.0",
+    "motion": "^10.15.3",
     "pinia": "^2.0.13",
     "quasar": "^2.6.6",
     "vue": "^3.2.25",
+    "vue-motion-one": "^0.3.0",
     "vue-router": "^4.1.2"
   },
   "devDependencies": {
